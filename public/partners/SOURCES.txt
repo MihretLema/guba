@@ -1,0 +1,5 @@
+Partner logo asset sources
+
+Cisco, Microsoft, Oracle, Dell: https://www.vectorlogo.zone/ (logos/<brand>/<brand>-ar21.svg).
+Fortinet, Schneider Electric: Simple Icons v11, https://github.com/simple-icons/simple-icons.
+Brand marks belong to their respective owners. Admin Logo URL overrides these bundled defaults.
