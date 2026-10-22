@@ -12,16 +12,16 @@ import { emptyStore, fields, normalizeStore, sections, statuses, validStore, typ
 
 const groups = [
   { label: "Overview", pages: ["Dashboard"] },
-  { label: "Content", pages: ["Homepage", "Contact information", "Services", "Projects", "Insights", "Training", "Partners & clients", "Clients", "Testimonials"] },
+  { label: "Content", pages: ["Homepage", "Contact information", "Services", "Projects", "Insights", "Partners & clients", "Clients", "Testimonials"] },
   { label: "Engagement", pages: ["Contact messages", "RFQ requests", "AI knowledge"] },
   { label: "Workspace", pages: ["Settings", "Access", "Activity logs"] },
 ];
 const allPages = groups.flatMap(group => group.pages);
-const icons: Record<string, string> = { Dashboard: "◫", Services: "⚙", Projects: "▧", Insights: "▤", Training: "◇", Events: "▦", Jobs: "▣", Products: "⬡", Clients: "♧", "Partners & clients": "⋈", Testimonials: "❞", "Contact messages": "✉", "RFQ requests": "↗", "AI knowledge": "✧" };
+const icons: Record<string, string> = { Dashboard: "◫", Services: "⚙", Projects: "▧", Insights: "▤", Events: "▦", Jobs: "▣", Products: "⬡", Clients: "♧", "Partners & clients": "⋈", Testimonials: "❞", "Contact messages": "✉", "RFQ requests": "↗", "AI knowledge": "✧" };
 const sectionLabel = (value: string) => value === "Partners & clients" ? "Partners" : value;
 const slug = (value: string) => encodeURIComponent(value.toLowerCase().replaceAll(" ", "-"));
 const date = (value: string) => { const parsed = new Date(value); return Number.isNaN(parsed.getTime()) ? value : parsed.toLocaleString(); };
-const summarySections: Section[] = ["Services", "Projects", "Insights", "Training", "Partners & clients", "Clients", "Testimonials", "Contact messages"];
+const summarySections: Section[] = ["Services", "Projects", "Insights", "Partners & clients", "Clients", "Testimonials", "Contact messages"];
 
 export function AdminDashboard({ displayName, email, signOutPath }: { displayName: string; email: string; signOutPath: string }) {
   const [page, setPage] = useState("Dashboard");
@@ -111,7 +111,7 @@ export function AdminDashboard({ displayName, email, signOutPath }: { displayNam
   const records = (store.items[page] ?? []).filter(item => (filter === "All" || item.status === filter) && `${item.title} ${item.detail} ${item.extra ?? ""} ${Object.values(item.fields ?? {}).join(" ")}`.toLowerCase().includes(query.toLowerCase()));
   const visibleItems = Object.entries(store.items).filter(([section]) => allPages.includes(section)).flatMap(([, items]) => items);
   const total = visibleItems.length;
-  const recent = ["Projects", "Insights", "Training", "Contact messages"];
+  const recent = ["Projects", "Insights", "Services", "Contact messages"];
 
   return <main className="admin-shell guba-console">
     <aside className={`admin-sidebar ${mobileOpen ? "mobile-open" : ""}`}><Link className="admin-brand" href="/"><span>G</span><p><strong>GUBA</strong><small>ADMIN WORKSPACE</small></p></Link><nav aria-label="Admin navigation">{groups.map(group => <div className="admin-group" key={group.label}><label>{group.label}</label>{group.pages.map(target => <button key={target} onClick={() => navigate(target)} className={page === target ? "active" : ""} aria-current={page === target ? "page" : undefined}><i aria-hidden="true">{icons[target] ?? "▫"}</i>{sectionLabel(target)}</button>)}</div>)}</nav><div className="admin-profile"><div>{displayName[0].toUpperCase()}</div><p><strong>{displayName}</strong><small>{email}</small></p>{signOutPath === "/api/admin/logout" ? <form action={signOutPath} method="post"><button>Sign out</button></form> : <a href={signOutPath}>Sign out</a>}</div></aside>
